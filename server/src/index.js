@@ -1,7 +1,7 @@
 const { ApolloServer, MockList } = require("apollo-server");
 const typeDefs = require("./schema");
 
-
+// Generage Mock data -> using apollo inbuild Mock Generator 
 const mocks = {
   Query: () => ({
     // trackForHome: () => [mocks.Track],
@@ -20,7 +20,8 @@ const mocks = {
   })
 }
 
-
+// Create a 'Express' server -> using Apollo Library
+// send the 'query schema' in typeDefs 
 const server = new ApolloServer({typeDefs, mocks:mocks});
 
 server.listen().then((serverInfo)=>{

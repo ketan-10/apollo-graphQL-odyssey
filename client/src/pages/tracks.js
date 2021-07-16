@@ -4,6 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import TrackCard from "../containers/track-card";
 
 
+// Construct the 'Query' 
 const TRACKS = gql`
   query getTracks {
     trackForHome {
@@ -27,10 +28,13 @@ const TRACKS = gql`
  */
 const Tracks = () => {
 
+  // send to 'useQuery' which will useConext of Apollo. 
+  // also send re-render when loading is completed.
   const {loading,error,data} = useQuery(TRACKS);
 
   return (
     <Layout grid>
+      {/* Conditionally render according to re-render stage */}
       <QueryResult data={data} error={error} loading={loading}>
         {data?.trackForHome?.map((track)=>(
           <TrackCard track={track} key={track.id}/>

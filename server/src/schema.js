@@ -1,7 +1,9 @@
 const { gql } = require('apollo-server');
 
 
-// GQL contains 'Types' and 'Fields' 
+// GQL contains 'Types' and 'Fields'
+// analogy: 'Types' -> 'Table', 'Fields' -> 'Columns'  
+// 'Query' defines starting point -> all request start from Query  
 const typeDefs = gql`
 
   """
