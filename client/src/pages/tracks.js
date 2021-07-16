@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from '../components';
+import { Layout, QueryResult } from '../components';
 import { gql, useQuery } from '@apollo/client';
 
 
@@ -28,11 +28,11 @@ const Tracks = () => {
 
   const {loading,error,data} = useQuery(TRACKS);
 
-  if(loading) return "loading...";
-
-  console.log(error);
-  if(error) return `ERROR ${error}`;
-  return <Layout grid>{JSON.stringify(data)}</Layout>;
+  return <Layout grid>
+    <QueryResult data={data} error={error} loading={loading}>
+      <p>{JSON.stringify(data)}</p>
+    </QueryResult>
+  </Layout>;
 };
 
 export default Tracks;
