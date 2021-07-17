@@ -7,7 +7,7 @@
     "start": "nodemon src/index"
   },
   "dependencies": {
-    "apollo-datasource-rest": "0.9.6",
+    "apollo-datasource-rest": "^3.0.1",
     "apollo-server": "^2.25.2",
     "graphql": "^15.5.1",
     "node-fetch": "^2.6.1"
