@@ -23,6 +23,9 @@ const resolvers = {
     trackForHome: async (parent,args,context,info) => {
       return context.dataSources.trackAPI.getTracksForHome();      
     },
+    track: (_,{id},{dataSources}) => {
+      return dataSources.trackAPI.getTrack(id);
+    } 
   },
   Track: {
     author: async ({authorId},_,{dataSources}) => {
