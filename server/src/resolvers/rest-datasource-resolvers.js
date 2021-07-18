@@ -17,6 +17,39 @@
     but it can be useful for more advanced actions like setting cache policies at the resolver level.
 */
 const resolvers = {
+
+  Mutation: {
+    incrementTrackViews: async (_,{id},{dataSources}) => {
+      try{
+        const response = await dataSources.trackAPI.incrementTrackViews(id);
+        // console.log(response);
+        return {
+          code: 200,
+          success: true,
+          message: `Successfully incremented number of views for track ${id}`,
+          /*
+            there are resolvers for: 'author' and 'modules' in type 'Track' 
+            so others you have to define 
+            Query -> 'track' field retrieves the whole track but its not useful 
+          */
+
+          // track: {
+          //   id: response.id,
+          // },
+          track: response,
+        }  
+      }catch(err){
+        return {
+          // 'extensions' added by 'apollo server dataSource' on error
+          code: err.extensions.response.status,
+          success: false,
+          message: err.extensions.response.body,
+          track: null,
+        }  
+      }
+    }
+  },
+
   Query: {
     // Returns array of Tracks that will be used to populate 
     // The homepage grid of our web client
