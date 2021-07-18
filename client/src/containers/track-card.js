@@ -4,6 +4,28 @@ import { colors, mq } from '../styles';
 import { humanReadableTimeFromSeconds } from '../utils/helpers';
 import {Link} from '@reach/router';
 
+import {gql, useMutation} from "@apollo/client";
+
+/**
+ * Mutation to increment a track's number of views
+ * (exported for tests)
+ */
+ export const INCREMENT_TRACK_VIEWS = gql`
+ mutation IncrementTrackViewsMutation($incrementTrackViewsId: ID!) {
+   incrementTrackViews(id: $incrementTrackViewsId) {
+     code
+     success
+     message
+     track {
+       id
+      #  numberOfViews is added so that 'cache' will be 'updated' 
+       numberOfViews
+     }
+   }
+ }
+`;
+
+
 /**
  * Track Card component renders basic info in a card format
  * for each track populating the tracks grid homepage.
@@ -11,8 +33,25 @@ import {Link} from '@reach/router';
 const TrackCard = ({ track }) => {
   const { title, thumbnail, author, length, modulesCount, id } = track;
 
+  // This onClick trigger will be completed even after
+  // Page redirects to the track details 
+  
+  // 'useQuery' in `track.js` page will use cache to show page ->
+  // But when useMutation completes Apollo will update the useQuery 
+  // so re-render the 'Track' component again on '/track/:trackId' page.
+  
+  // Thats why  React thows warning that 'Can't perform a React state update on an unmounted component'
+  // , that will be this component, as it's onClick will perform state update after redirect 
+  const [incrementTrackViews] = useMutation(INCREMENT_TRACK_VIEWS, {
+    variables: {incrementTrackViewsId: id},
+    onCompleted: (data) => {
+      console.log(data);
+    }
+  });
+
   return (
-    <CardContainer to={`/track/${id}`}>
+    <CardContainer to={`/track/${id}`}
+      onClick={incrementTrackViews}>
       <CardContent>
         <CardImageContainer>
           <CardImage src={thumbnail} alt={title} />
