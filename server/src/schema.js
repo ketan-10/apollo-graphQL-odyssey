@@ -9,7 +9,7 @@ const typeDefs = gql`
   type Mutation {
     incrementTrackViews(id: ID!): IncrementTrackViewsResponse!
   }
-  
+  # Mutation Response Type
   type IncrementTrackViewsResponse {
     "Similar to HTTP status code, represents the status of the mutation"
     code: Int!
