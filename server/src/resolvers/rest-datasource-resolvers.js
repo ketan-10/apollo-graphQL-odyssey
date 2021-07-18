@@ -24,6 +24,7 @@ const resolvers = {
       return context.dataSources.trackAPI.getTracksForHome();      
     },
     // Get a single track by id, for the Track page
+    // {id} args from query argument
     track: (_,{id},{dataSources}) => {
       return dataSources.trackAPI.getTrack(id);
     } 
@@ -33,6 +34,7 @@ const resolvers = {
       return dataSources.trackAPI.getAuthor(authorId);
     },
     modules: async ({modules},_,{dataSources}) => {
+      // Alternate solution : no 'Module' resolver needed. 
       // return (Promise.all(modules.map(m => dataSources.trackAPI.getModule(m))));
       return modules.map(m => ({id:m}));
     }
