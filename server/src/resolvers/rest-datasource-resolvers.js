@@ -20,21 +20,36 @@ const resolvers = {
   Query: {
     // Returns array of Tracks that will be used to populate 
     // The homepage grid of our web client
-    trackForHome: async (parent,args,context,info) => {
+    trackForHome: (parent,args,context,info) => {
       return context.dataSources.trackAPI.getTracksForHome();      
     },
+    // Get a single track by id, for the Track page
     track: (_,{id},{dataSources}) => {
       return dataSources.trackAPI.getTrack(id);
     } 
   },
   Track: {
-    author: async ({authorId},_,{dataSources}) => {
+    author: ({authorId},_,{dataSources}) => {
       return dataSources.trackAPI.getAuthor(authorId);
     },
+    modules: async ({modules},_,{dataSources}) => {
+      // return (Promise.all(modules.map(m => dataSources.trackAPI.getModule(m))));
+      return modules.map(m => ({id:m}));
+    }
   },
-  // Author:{
-  //   name: () => "Ketan"
-  // }
+  // https://community.apollographql.com/t/lift-off-part-3-resolver-chains-help-with-using-module-id-instead-of-track-id-modules/797
+  Module:{
+    title: async ({id},_,{dataSources}) => {
+      const {title} = await dataSources.trackAPI.getModule(id);
+      return title;
+
+    },
+    length: async ({id},_,{dataSources}) => {
+      const {length} = await dataSources.trackAPI.getModule(id);
+      return length;
+    }
+  },
+  
 
 }
 
